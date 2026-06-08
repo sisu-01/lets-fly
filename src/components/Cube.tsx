@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CubeLet from "./CubeLet";
 
 interface CubeProps {
   size: number;
@@ -23,30 +24,18 @@ const Cube = ({ size }: CubeProps) => {
         // lightness 계산: 0~1 사이의 값을 얻기 위해 나눗셈 조정
         const lightness = (posIndex+1) / (size**3/100);
 
-        const isSelected = hoveredCoords?.x === pos.x && hoveredCoords?.y === pos.y && hoveredCoords?.z === pos.z;
-        const isSameX = hoveredCoords?.x === pos.x;
-        const isSameY = hoveredCoords?.y === pos.y;
-
         return (
-          <mesh
+          <CubeLet
             key={id}
-            position={[pos.x * 2, pos.y * 2, pos.z * 2]}
-            onPointerOver={(e) => {
-              e.stopPropagation();
-              setHoveredCoords({ x: pos.x, y: pos.y, z: pos.z });
-            }}
-            onPointerOut={() => setHoveredCoords(null)}
-          >
-            <boxGeometry args={[2, 2, 2]} />
-            <meshStandardMaterial
-              color={
-                isSelected ? "yellow" 
-                : isSameX ? "red" 
-                : isSameY ? "blue" 
-                : `hsl(0, 0%, ${lightness}%)`
-              }
-            />
-          </mesh>
+            id={id}
+            x={pos.x}
+            y={pos.y}
+            z={pos.z}
+            lightness={lightness}
+            hoveredCoords={hoveredCoords}
+            onHover={(hx, hy, hz) => setHoveredCoords({ x: hx, y: hy, z: hz })}
+            onHoverOut={() => setHoveredCoords(null)}
+          />
         );
       })}
     </>
