@@ -1,3 +1,4 @@
+import "./App.css";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 // import { useRef } from "react";
