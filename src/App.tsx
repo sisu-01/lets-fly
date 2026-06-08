@@ -18,7 +18,7 @@ function App() {
         <OrbitControls target={[cubeSize-1, cubeSize-1, cubeSize-1]} />
         <ambientLight intensity={1} />
 
-        <Cube big={cubeSize} />
+        <Cube size={cubeSize} />
       </Canvas>
     </div>
   )

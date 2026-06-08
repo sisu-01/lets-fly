@@ -1,16 +1,16 @@
 import { useState } from "react";
 
 interface CubeProps {
-  big: number;
+  size: number;
 }
 
-const Cube = ({ big }: CubeProps) => {
+const Cube = ({ size }: CubeProps) => {
   const [hoveredCoords, setHoveredCoords] = useState<{x: number, y: number, z: number} | null>(null);
 
   const cubes = [];
-  for (let x = 0; x < big; x++) {
-    for (let y = 0; y < big; y++) {
-      for (let z = 0; z < big; z++) {
+  for (let x = 0; x < size; x++) {
+    for (let y = 0; y < size; y++) {
+      for (let z = 0; z < size; z++) {
         cubes.push({ x, y, z });
       }
     }
@@ -21,7 +21,7 @@ const Cube = ({ big }: CubeProps) => {
       {cubes.map((pos, posIndex) => {
         const id = `${pos.x}${pos.y}${pos.z}`;
         // lightness 계산: 0~1 사이의 값을 얻기 위해 나눗셈 조정
-        const lightness = (posIndex+1) / (big**3/100);
+        const lightness = (posIndex+1) / (size**3/100);
 
         const isSelected = hoveredCoords?.x === pos.x && hoveredCoords?.y === pos.y && hoveredCoords?.z === pos.z;
         const isSameX = hoveredCoords?.x === pos.x;
