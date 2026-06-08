@@ -4,6 +4,9 @@ import { Canvas } from "@react-three/fiber";
 import Cube from "./components/Cube";
 
 function App() {
+
+  const cubeSize: number = 3;
+
   return(
     <div id="canvas-container">
       <Canvas camera={{ 
@@ -12,10 +15,10 @@ function App() {
       }}>
         <color attach="background" args={["#959595"]} />
 
-        <OrbitControls target={[2, 2, 2]} />
+        <OrbitControls target={[cubeSize-1, cubeSize-1, cubeSize-1]} />
         <ambientLight intensity={1} />
 
-        <Cube />
+        <Cube big={cubeSize} />
       </Canvas>
     </div>
   )

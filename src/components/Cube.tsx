@@ -1,36 +1,54 @@
-const Cube = () => {
+import { useState } from "react";
 
-  const positions: number[][][] = [
-    [[0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8]],
+interface CubeProps {
+  big: number;
+}
 
-    [[9, 10, 11],
-    [12, 13, 14],
-    [15, 16, 17]],
+const Cube = ({ big }: CubeProps) => {
+  const [hoveredCoords, setHoveredCoords] = useState<{x: number, y: number, z: number} | null>(null);
 
-    [[18, 19, 20],
-    [21, 22, 23],
-    [24, 25, 26]],
-  ];
+  const cubes = [];
+  for (let x = 0; x < big; x++) {
+    for (let y = 0; y < big; y++) {
+      for (let z = 0; z < big; z++) {
+        cubes.push({ x, y, z });
+      }
+    }
+  }
 
   return (
     <>
-      {positions.map((x, xIndex) => 
-        x.map((y, yIndex) => 
-          y.map((z, zIndex) => {
-            console.log(z);
-            const lightness = (z+1) / 0.27;
-            return (
-              <mesh key={`${xIndex}${yIndex}${zIndex}`} position={[xIndex * 2, yIndex * 2, zIndex * 2]}>
-                <boxGeometry args={[2, 2, 2]} />
-                {/* <meshStandardMaterial color="white" /> */}
-                <meshStandardMaterial color={`hsl(0, 0%, ${lightness}%)`} />
-              </mesh>
-            )
-          })
-        )
-      )}
+      {cubes.map((pos, posIndex) => {
+        const id = `${pos.x}${pos.y}${pos.z}`;
+        // lightness 계산: 0~1 사이의 값을 얻기 위해 나눗셈 조정
+        const lightness = (posIndex+1) / (big**3/100);
+
+        const isSelected = hoveredCoords?.x === pos.x && hoveredCoords?.y === pos.y && hoveredCoords?.z === pos.z;
+        const isSameX = hoveredCoords?.x === pos.x;
+        const isSameY = hoveredCoords?.y === pos.y;
+
+        return (
+          <mesh
+            key={id}
+            position={[pos.x * 2, pos.y * 2, pos.z * 2]}
+            onPointerOver={(e) => {
+              e.stopPropagation();
+              setHoveredCoords({ x: pos.x, y: pos.y, z: pos.z });
+            }}
+            onPointerOut={() => setHoveredCoords(null)}
+          >
+            <boxGeometry args={[2, 2, 2]} />
+            <meshStandardMaterial
+              color={
+                isSelected ? "yellow" 
+                : isSameX ? "red" 
+                : isSameY ? "blue" 
+                : `hsl(0, 0%, ${lightness}%)`
+              }
+            />
+          </mesh>
+        );
+      })}
     </>
   );
 }
